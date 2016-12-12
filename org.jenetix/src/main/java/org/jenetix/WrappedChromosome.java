@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Iterator;
 
 import org.jenetics.Chromosome;
+import org.jenetics.Gene;
 import org.jenetics.util.ISeq;
 
 /**
@@ -31,12 +32,13 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class WrappedChromosome<A> implements Chromosome<WrappedGene<A>> {
 
-	private final Chromosome<WrappedGene<A>> _chromosome;
+	private final Chromosome<? extends Gene<? extends A, ?>> _chromosome;
 
 
-	private WrappedChromosome(final Chromosome<WrappedGene<A>> chromosome) {
+	public WrappedChromosome(final Chromosome<? extends Gene<? extends A, ?>> chromosome) {
 		_chromosome = requireNonNull(chromosome);
 	}
 
@@ -46,13 +48,14 @@ public final class WrappedChromosome<A> implements Chromosome<WrappedGene<A>> {
 	}
 
 	@Override
-	public Chromosome<WrappedGene<A>> newInstance(ISeq<WrappedGene<A>> genes) {
-		return new WrappedChromosome<A>(_chromosome.newInstance(genes));
+	public Chromosome<WrappedGene<A>> newInstance(final ISeq<WrappedGene<A>> genes) {
+		final ISeq seq =  genes.map(WrappedGene::wrapped);
+		return new WrappedChromosome(_chromosome.newInstance(seq));
 	}
 
 	@Override
 	public WrappedGene<A> getGene(int index) {
-		return _chromosome.getGene(index);
+		return WrappedGene.of((Gene<A, ?>)_chromosome.getGene(index));
 	}
 
 	@Override
@@ -62,12 +65,12 @@ public final class WrappedChromosome<A> implements Chromosome<WrappedGene<A>> {
 
 	@Override
 	public ISeq<WrappedGene<A>> toSeq() {
-		return _chromosome.toSeq();
+		return _chromosome.toSeq().map(g -> WrappedGene.of((Gene<A, ?>)g));
 	}
 
 	@Override
 	public Iterator<WrappedGene<A>> iterator() {
-		return _chromosome.iterator();
+		return toSeq().iterator();
 	}
 
 	@Override

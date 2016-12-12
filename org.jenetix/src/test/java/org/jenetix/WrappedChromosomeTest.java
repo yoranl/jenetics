@@ -19,49 +19,39 @@
  */
 package org.jenetix;
 
-import static java.util.Objects.requireNonNull;
+import org.testng.annotations.Test;
 
+import org.jenetics.CharacterChromosome;
+import org.jenetics.DoubleChromosome;
 import org.jenetics.Gene;
+import org.jenetics.Genotype;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.Mutator;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EngineTest;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public final class WrappedGene<A> implements Gene<A, WrappedGene<A>> {
+public class WrappedChromosomeTest {
 
-	private final Gene<A, ?> _gene;
-
-	private WrappedGene(final Gene<A, ?> gene) {
-		_gene = requireNonNull(gene);
+	static double fitness(final Genotype<WrappedGene<Number>> gene) {
+		return 1;
 	}
 
-	public Gene<A, ?> wrapped() {
-		return _gene;
-	}
+	@Test
+	public void create() {
+		final Genotype<WrappedGene<Number>> gt = Genotype.of(
+			new WrappedChromosome<>(DoubleChromosome.of(0.0, 10.0, 5)),
+			//new WrappedChromosome<>(CharacterChromosome.of(4)),
+			new WrappedChromosome<>(IntegerChromosome.of(0, 10, 5))
+		);
 
-	@Override
-	public boolean isValid() {
-		return _gene.isValid();
-	}
+		final Engine<WrappedGene<Number>, Double> engine = Engine
+			.builder(WrappedChromosomeTest::fitness, gt)
+			.alterers(new Mutator<>())
+			.build();
 
-	@Override
-	public A getAllele() {
-		return _gene.getAllele();
-	}
-
-	@Override
-	public WrappedGene<A> newInstance() {
-		return of(_gene.newInstance());
-	}
-
-	@Override
-	public WrappedGene<A> newInstance(final A value) {
-		return of(_gene.newInstance(value));
-	}
-
-	public static <A> WrappedGene<A> of(final Gene<A, ?> gene) {
-		return new WrappedGene<A>(gene);
 	}
 
 }
