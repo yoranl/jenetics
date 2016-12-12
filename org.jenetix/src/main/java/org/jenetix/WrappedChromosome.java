@@ -23,6 +23,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 
+import org.jenetics.internal.util.Lazy;
+
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
 import org.jenetics.util.ISeq;
@@ -32,14 +34,22 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
 public final class WrappedChromosome<A> implements Chromosome<WrappedGene<A>> {
 
 	private final Chromosome<? extends Gene<? extends A, ?>> _chromosome;
+	private final Lazy<ISeq<WrappedGene<A>>> _seq;
 
-
-	public WrappedChromosome(final Chromosome<? extends Gene<? extends A, ?>> chromosome) {
+	@SuppressWarnings("unchecked")
+	private WrappedChromosome(
+		final Chromosome<? extends Gene<? extends A, ?>> chromosome
+	) {
 		_chromosome = requireNonNull(chromosome);
+		_seq = Lazy.of(() ->
+			chromosome.toSeq().map(g -> WrappedGene.of((Gene<A, ?>)g)));
+	}
+
+	public Chromosome<? extends Gene<? extends A, ?>> unwrap() {
+		return _chromosome;
 	}
 
 	@Override
@@ -48,14 +58,15 @@ public final class WrappedChromosome<A> implements Chromosome<WrappedGene<A>> {
 	}
 
 	@Override
-	public Chromosome<WrappedGene<A>> newInstance(final ISeq<WrappedGene<A>> genes) {
-		final ISeq seq =  genes.map(WrappedGene::wrapped);
-		return new WrappedChromosome(_chromosome.newInstance(seq));
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public Chromosome<WrappedGene<A>>
+	newInstance(final ISeq<WrappedGene<A>> genes) {
+		return of(_chromosome.newInstance((ISeq)genes.map(WrappedGene::unwrap)));
 	}
 
 	@Override
-	public WrappedGene<A> getGene(int index) {
-		return WrappedGene.of((Gene<A, ?>)_chromosome.getGene(index));
+	public WrappedGene<A> getGene(final int index) {
+		return _seq.get().get(index);
 	}
 
 	@Override
@@ -65,7 +76,7 @@ public final class WrappedChromosome<A> implements Chromosome<WrappedGene<A>> {
 
 	@Override
 	public ISeq<WrappedGene<A>> toSeq() {
-		return _chromosome.toSeq().map(g -> WrappedGene.of((Gene<A, ?>)g));
+		return _seq.get();
 	}
 
 	@Override
@@ -76,6 +87,11 @@ public final class WrappedChromosome<A> implements Chromosome<WrappedGene<A>> {
 	@Override
 	public Chromosome<WrappedGene<A>> newInstance() {
 		return new WrappedChromosome<A>(_chromosome.newInstance());
+	}
+
+	public static <A> WrappedChromosome<A>
+	of(final Chromosome<? extends Gene<? extends A, ?>> chromosome) {
+		return new WrappedChromosome<A>(chromosome);
 	}
 
 }

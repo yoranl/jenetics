@@ -36,7 +36,7 @@ public final class WrappedGene<A> implements Gene<A, WrappedGene<A>> {
 		_gene = requireNonNull(gene);
 	}
 
-	public Gene<A, ?> wrapped() {
+	public Gene<A, ?> unwrap() {
 		return _gene;
 	}
 

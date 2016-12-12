@@ -21,14 +21,11 @@ package org.jenetix;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.CharacterChromosome;
 import org.jenetics.DoubleChromosome;
-import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.IntegerChromosome;
 import org.jenetics.Mutator;
 import org.jenetics.engine.Engine;
-import org.jenetics.engine.EngineTest;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -42,9 +39,9 @@ public class WrappedChromosomeTest {
 	@Test
 	public void create() {
 		final Genotype<WrappedGene<Number>> gt = Genotype.of(
-			new WrappedChromosome<>(DoubleChromosome.of(0.0, 10.0, 5)),
+			WrappedChromosome.of(DoubleChromosome.of(0.0, 10.0, 5)),
 			//new WrappedChromosome<>(CharacterChromosome.of(4)),
-			new WrappedChromosome<>(IntegerChromosome.of(0, 10, 5))
+			WrappedChromosome.of(IntegerChromosome.of(0, 10, 5))
 		);
 
 		final Engine<WrappedGene<Number>, Double> engine = Engine
