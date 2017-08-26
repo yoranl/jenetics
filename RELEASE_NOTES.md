@@ -1,5 +1,76 @@
 ## Release notes
 
+### [3.9.0](https://github.com/jenetics/jenetics/releases/tag/v3.9.0)
+
+#### Improvements
+
+* [#26](https://github.com/jenetics/jenetics/issues/26): Extend Gradle scripts for multi-module releases.
+* [#27](https://github.com/jenetics/jenetics/issues/27): Parallel `EvolutionStream`.
+* [#64](https://github.com/jenetics/jenetics/issues/64): Implementation of `TreeGene`/`Chromosome`.
+* [#181](https://github.com/jenetics/jenetics/issues/181): XML marshaling module: `org.jenetics.xml`.
+* [#199](https://github.com/jenetics/jenetics/issues/199): Termination: Population convergence.
+* [#201](https://github.com/jenetics/jenetics/issues/201): Simplify Gradle build scripts.
+* [#204](https://github.com/jenetics/jenetics/issues/204): Remove internal 'Stack' container class.
+* [#207](https://github.com/jenetics/jenetics/issues/207): Add missing `BitChromosome` factory methods.
+* [#216](https://github.com/jenetics/jenetics/issues/216): Restructuring of User's Manual.
+* [#218](https://github.com/jenetics/jenetics/issues/218): Mark `LCG64ShiftRandom` class as deprecated.
+* [#219](https://github.com/jenetics/jenetics/issues/219): Mark `JAXB` marshaling as deprecated.
+* [#227](https://github.com/jenetics/jenetics/issues/227): Genetic Programming module: `org.jenetics.prog`.
+* [#228](https://github.com/jenetics/jenetics/issues/228): Upgrade Gradle to 4.0.2.
+* [#229](https://github.com/jenetics/jenetics/issues/229): Define stable module names.
+* [#236](https://github.com/jenetics/jenetics/issues/236): Rename module `jenetix` to `org.jenetics.ext`
+* [#238](https://github.com/jenetics/jenetics/issues/238): Align project directories with maven artifact names.
+
+#### Bugs
+
+* [#212](https://github.com/jenetics/jenetics/issues/212): Fix `Seq.toArray(Object[])` method.
+* [#226](https://github.com/jenetics/jenetics/pull/226): Incorrect `MinMax.toString()` output.
+* [#233](https://github.com/jenetics/jenetics/pull/233): `Engine.java` Comment Grammar Fix.
+* [#234](https://github.com/jenetics/jenetics/issues/234): `Population.empty()` isn't empty
+
+### [3.8.0](https://github.com/jenetics/jenetics/releases/tag/v3.8.0)
+
+#### Improvements
+
+* [#157](https://github.com/jenetics/jenetics/issues/157): Add `LineCrossover` class.
+* [#158](https://github.com/jenetics/jenetics/issues/158): Add `IntermediateCrossover` class.
+* [#168](https://github.com/jenetics/jenetics/issues/168): Remove dependency to `java.desktop` module.
+* [#169](https://github.com/jenetics/jenetics/issues/169): Describe how to configure (μ, λ) and (μ + λ) Evolution Strategies in manual.
+* [#177](https://github.com/jenetics/jenetics/issues/177): Additional 'Seq' conversion functions:
+    * [Seq.asISeq()](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/util/Seq.html#asISeq--)
+    * [Seq.asMSeq()](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/util/Seq.html#asMSeq--)    
+* [#182](https://github.com/jenetics/jenetics/issues/182): Rename build script to default names. All build scripts are now named `build.gradle`.
+* [#188](https://github.com/jenetics/jenetics/issues/188): Additional `Engine.Builder` methods
+    * [Engine.Builder.survivorsSize(int)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#survivorsSize-int-)
+    * [Engine.Builder.offspringSize(int)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#offspringSize-int-)   
+    * [Engine.Builder.survivorsFraction(double)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#survivorsFraction-double-)      
+* [#189](https://github.com/jenetics/jenetics/issues/189): `TruncationSelector` is now able to globally limit best selected individuals. This is used for (μ, λ) and (μ + λ) Evolution Strategies.
+* [#197](https://github.com/jenetics/jenetics/issues/197): Improve CPU utilization for long running fitness functions. The original concurrent fitness function evaluation where assumed to be quite *fast*.
+
+### [3.7.0](https://github.com/jenetics/jenetics/releases/tag/v3.7.0)
+
+#### Improvements
+
+* [#127](https://github.com/jenetics/jenetics/issues/127): Change the maven group and artifact ID from `org.bitbucket:org.jenetics` to `io.jenetics:jenetics`.
+* [#142](https://github.com/jenetics/jenetics/issues/142): Jenetics now compiles without warnings with Java 9 EA.
+* [#145](https://github.com/jenetics/jenetics/issues/145): Add additional `Engine.stream(...)` and `Engine.iterator(...)` methods:
+    * [stream(Iterable<Genotype<G>> genotypes)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#stream-java.lang.Iterable-)
+    * [stream(Iterable<Genotype<G>> genotypes, long generation)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#stream-java.lang.Iterable-long-)
+    * [stream(EvolutionResult<G, C> result)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#stream-org.jenetics.engine.EvolutionResult-)
+    * [iterator(Iterable<Genotype<G>> genotypes, long generation)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#iterator-java.lang.Iterable-)
+    * [iterator(Population<G, C> population)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#iterator-org.jenetics.Population-)
+    * [iterator(EvolutionResult<G, C> result)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#iterator-org.jenetics.engine.EvolutionResult-)
+* [#150](https://github.com/jenetics/jenetics/issues/150): Implement _fitness convergence_ termination strategy.    
+* [#152](https://github.com/jenetics/jenetics/issues/152): Remove `hashCode` and replace `equals` method with `sameState(T)` for mutable objects.
+* [#156](https://github.com/jenetics/jenetics/issues/156): Implementation of an [UniformCrossover](https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_crossover_and_half_uniform_crossover).
+* [#162](https://github.com/jenetics/jenetics/issues/162): Update and improve _User's Manual_.
+
+#### Bug fixes
+
+* [#143](https://github.com/jenetics/jenetics/issues/143): Fix serialization of `EvolutionResult` class.
+* [#146](https://github.com/jenetics/jenetics/issues/146): NPE in `EvolutionResult.toBestEvolutionResult()` when collecting empty `EvolutionStream`s.
+* [#159](https://github.com/jenetics/jenetics/issues/159): The _User's Manual_ build fails for [Lyx](http://www.lyx.org/) version 2.2.2. 
+
 ### [3.6.0](https://github.com/jenetics/jenetics/releases/tag/v3.6.0)
 
 #### Improvements
